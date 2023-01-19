@@ -104,7 +104,8 @@ def bar_plot_average_tput_single_user(run_nums):
 
     fig, axs    =   plt.subplots(nrows  =   len(csv_file_list),
                                 ncols   =   len(clients),
-                                sharex=True)
+                                sharex=True,
+                                sharey=True)
 
     fig.set_size_inches(fig_size)
     for csv_file in csv_file_list:
@@ -118,6 +119,10 @@ def bar_plot_average_tput_single_user(run_nums):
         container  =   axs[csv_file_list.index(csv_file)].bar(x=send_rates, 
                                                     height=avgs, yerr=stds)
         axs[csv_file_list.index(csv_file)].bar_label(container)
+        axs[csv_file_list.index(csv_file)].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list.index(csv_file)].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
     fig.savefig(f"figures/{operator}/single_{operator}_average_tput")
 
 def bar_plot_average_tput_2_users(run_nums):
@@ -134,7 +139,8 @@ def bar_plot_average_tput_2_users(run_nums):
 
     fig, axs    =   plt.subplots(nrows  =   len(run_nums),
                                 ncols   =   len(clients),
-                                sharex=True)
+                                sharex=True,
+                                sharey=True)
 
     fig.set_size_inches(fig_size)
 
@@ -152,6 +158,10 @@ def bar_plot_average_tput_2_users(run_nums):
                                                 height=avgs, 
                                                 yerr=stds)
         axs[csv_file_list_1.index(csv_file)][0].bar_label(container)
+        axs[csv_file_list_1.index(csv_file)][0].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_1.index(csv_file)][0].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
 
     #phone_2
     for csv_file in csv_file_list_2:
@@ -167,6 +177,10 @@ def bar_plot_average_tput_2_users(run_nums):
                                                 height=avgs, 
                                                 yerr=stds)
         axs[csv_file_list_2.index(csv_file)][1].bar_label(container)
+        axs[csv_file_list_2.index(csv_file)][1].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
 
     fig.savefig(f"figures/{operator}/2_users_{operator}_average_tput")
 
@@ -187,7 +201,8 @@ def bar_plot_average_tput_3_users(run_nums):
 
     fig, axs    =   plt.subplots(nrows  =   len(run_nums),
                                 ncols   =   len(clients),
-                                sharex=True)
+                                sharex=True,
+                                sharey=True)
 
     fig.set_size_inches(fig_size)
 
@@ -205,6 +220,10 @@ def bar_plot_average_tput_3_users(run_nums):
                                                 height=avgs, 
                                                 yerr=stds)
         axs[csv_file_list_1.index(csv_file)][0].bar_label(container)
+        axs[csv_file_list_1.index(csv_file)][0].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_1.index(csv_file)][0].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
 
     #phone_2
     for csv_file in csv_file_list_2:
@@ -220,6 +239,10 @@ def bar_plot_average_tput_3_users(run_nums):
                                                 height=avgs, 
                                                 yerr=stds)
         axs[csv_file_list_2.index(csv_file)][1].bar_label(container)
+        axs[csv_file_list_2.index(csv_file)][1].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
 
     #phone_3
     for csv_file in csv_file_list_3:
@@ -235,6 +258,10 @@ def bar_plot_average_tput_3_users(run_nums):
                                                 height=avgs, 
                                                 yerr=stds)
         axs[csv_file_list_3.index(csv_file)][2].bar_label(container)
+        axs[csv_file_list_3.index(csv_file)][2].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_3.index(csv_file)][2].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
     fig.savefig(f"figures/{operator}/3_users_{operator}_average_tput")
 
 def bar_plot_ca_tput_single_user(run_nums):
@@ -268,6 +295,10 @@ def bar_plot_ca_tput_single_user(run_nums):
                     rot=0)
         axs[csv_file_list.index(csv_file)].legend(loc   =   'upper left',
                                                 ncol    =   3)
+        axs[csv_file_list.index(csv_file)].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list.index(csv_file)].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
         if(csv_file_list.index(csv_file)!=0):
             axs[csv_file_list.index(csv_file)].get_legend().remove()
 
@@ -288,7 +319,8 @@ def bar_plot_ca_tput_2_users(run_nums):
 
     fig, axs    =   plt.subplots(nrows  =   len(run_nums),
                                 ncols   =   len(clients),
-                                sharex=True)
+                                sharex=True,
+                                sharey=True)
 
     fig.set_size_inches(fig_size)
     #phone_1
@@ -312,6 +344,10 @@ def bar_plot_ca_tput_2_users(run_nums):
                     rot=0)
         axs[csv_file_list_1.index(csv_file)][0].legend(loc   =   'upper left',
                                                 ncol    =   3)
+        axs[csv_file_list_1.index(csv_file)][0].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_1.index(csv_file)][0].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
         if(csv_file_list_1.index(csv_file)!=0):
             axs[csv_file_list_1.index(csv_file)][0].get_legend().remove()
 
@@ -334,6 +370,12 @@ def bar_plot_ca_tput_2_users(run_nums):
                     ax  =   axs[csv_file_list_2.index(csv_file)][1],
                     stacked =   True,
                     rot=0)
+        axs[csv_file_list_2.index(csv_file)][1].legend(loc   =   'upper left',
+                                                ncol    =   3)
+        axs[csv_file_list_2.index(csv_file)][1].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
         axs[csv_file_list_2.index(csv_file)][1].get_legend().remove()
 
     fig.savefig(f"figures/{operator}/2_users_{operator}_per_carrier_average_tput")
@@ -356,7 +398,8 @@ def bar_plot_ca_tput_3_users(run_nums):
 
     fig, axs    =   plt.subplots(nrows  =   len(run_nums),
                                 ncols   =   len(clients),
-                                sharex=True)
+                                sharex=True,
+                                sharey=True)
 
     fig.set_size_inches(fig_size)
     #phone_1
@@ -380,6 +423,10 @@ def bar_plot_ca_tput_3_users(run_nums):
                     rot=0)
         axs[csv_file_list_1.index(csv_file)][0].legend(loc   =   'upper left',
                                                 ncol    =   3)
+        axs[csv_file_list_1.index(csv_file)][0].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_1.index(csv_file)][0].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
         if(csv_file_list_1.index(csv_file)!=0):
             axs[csv_file_list_1.index(csv_file)][0].get_legend().remove()
 
@@ -403,6 +450,10 @@ def bar_plot_ca_tput_3_users(run_nums):
                     stacked =   True,
                     rot=0)
         axs[csv_file_list_2.index(csv_file)][1].get_legend().remove()
+        axs[csv_file_list_2.index(csv_file)][1].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
 
     #phone_3
     for csv_file in csv_file_list_3:
@@ -424,6 +475,10 @@ def bar_plot_ca_tput_3_users(run_nums):
                     stacked =   True,
                     rot=0)
         axs[csv_file_list_3.index(csv_file)][2].get_legend().remove()
+        axs[csv_file_list_3.index(csv_file)][2].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_3.index(csv_file)][2].set_ylabel("Throughput (Mbps)",
+                                                        fontsize=10)
 
     fig.savefig(f"figures/{operator}/3_users_{operator}_per_carrier_average_tput")
 
@@ -441,7 +496,8 @@ def plot_pcell_tput_usage_2_users(rum_nums):
 
     fig, axs    =   plt.subplots(nrows  =   len(run_nums),
                                 ncols   =   1,
-                                sharex=True)
+                                sharex=True,
+                                sharey=True)
 
     fig.set_size_inches(fig_size)
     
@@ -488,6 +544,10 @@ def plot_pcell_tput_usage_2_users(rum_nums):
                     rot=0)
         container  =   axs[count].bar(x=send_rates, 
                                     height=df[renamed_cols[0]])
+        axs[count].set_xlabel("Send rates (Mbps)",
+                                fontsize=10)
+        axs[count].set_ylabel("Throughput (Mbps)",
+                                fontsize=10)
         axs[count].bar_label(container)
         count   +=1
 
@@ -510,7 +570,8 @@ def plot_pcell_tput_usage_3_users(rum_nums):
 
     fig, axs    =   plt.subplots(nrows  =   len(run_nums),
                                 ncols   =   1,
-                                sharex=True)
+                                sharex=True,
+                                sharey=True)
     
 
     fig.set_size_inches(fig_size)
@@ -563,6 +624,7 @@ def plot_pcell_tput_usage_3_users(rum_nums):
         df_list_3.append(df)
    
     count   =   0
+
     for df_1, df_2, df_3 in zip(df_list_1, df_list_2, df_list_3):
         df  =   df_1 + df_2 +  df_3
         df['sending rates']    = send_rates
@@ -574,6 +636,10 @@ def plot_pcell_tput_usage_3_users(rum_nums):
         container  =   axs[count].bar(x=send_rates, 
                                     height=df[renamed_cols[0]])
         axs[count].bar_label(container)
+        axs[count].set_xlabel("Send rates (Mbps)",
+                                fontsize=10)
+        axs[count].set_ylabel("Throughput (Mbps)",
+                                fontsize=10)
         count   +=1
 
     fig.savefig(f"figures/{operator}/3_users_{operator}_pcell_tput_usage")
@@ -582,10 +648,10 @@ if __name__ == '__main__':
    
 
     #bar_plot_average_tput_single_user(run_nums)
-    #bar_plot_average_tput_2_users(run_nums)
-    #bar_plot_average_tput_3_users(run_nums)
     #bar_plot_ca_tput_single_user(run_nums)
+    #bar_plot_average_tput_2_users(run_nums)
     #bar_plot_ca_tput_2_users(run_nums)
-    #bar_plot_ca_tput_3_users(run_nums)
     #plot_pcell_tput_usage_2_users(run_nums)
-    plot_pcell_tput_usage_3_users(run_nums)
+    #bar_plot_average_tput_3_users(run_nums)
+    #bar_plot_ca_tput_3_users(run_nums)
+    #plot_pcell_tput_usage_3_users(run_nums)
