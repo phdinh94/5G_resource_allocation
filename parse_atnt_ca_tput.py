@@ -272,7 +272,7 @@ def bar_plot_ca_tput_single_user(run_nums):
             axs[csv_file_list.index(csv_file)].get_legend().remove()
 
 
-    fig.savefig(f"figures/{operator}/single_{operator}_per_carier_average_tput")
+    fig.savefig(f"figures/{operator}/single_{operator}_per_carrier_average_tput")
 
 def bar_plot_ca_tput_2_users(run_nums):
     """
@@ -336,7 +336,7 @@ def bar_plot_ca_tput_2_users(run_nums):
                     rot=0)
         axs[csv_file_list_2.index(csv_file)][1].get_legend().remove()
 
-    fig.savefig(f"figures/{operator}/2_users_{operator}_per_carier_average_tput")
+    fig.savefig(f"figures/{operator}/2_users_{operator}_per_carrier_average_tput")
 
 def bar_plot_ca_tput_3_users(run_nums):
 
@@ -425,9 +425,9 @@ def bar_plot_ca_tput_3_users(run_nums):
                     rot=0)
         axs[csv_file_list_3.index(csv_file)][2].get_legend().remove()
 
-    fig.savefig(f"figures/{operator}/3_users_{operator}_per_carier_average_tput")
+    fig.savefig(f"figures/{operator}/3_users_{operator}_per_carrier_average_tput")
 
-def plot_per_ca_tput_usage_2_users(rum_nums):
+def plot_pcell_tput_usage_2_users(rum_nums):
     """
     Plot total throughput usage per carrier + sending rate for all runs, 2 users
     """
@@ -491,9 +491,9 @@ def plot_per_ca_tput_usage_2_users(rum_nums):
         axs[count].bar_label(container)
         count   +=1
 
-    fig.savefig(f"figures/{operator}/2_users_{operator}_per_carier_tput_usage")
+    fig.savefig(f"figures/{operator}/2_users_{operator}_pcell_tput_usage")
 
-def plot_per_ca_tput_usage_3_users(rum_nums):
+def plot_pcell_tput_usage_3_users(rum_nums):
     """
     Plot total throughput usage per carrier + sending rate for all runs, 2 users
     """
@@ -576,7 +576,7 @@ def plot_per_ca_tput_usage_3_users(rum_nums):
         axs[count].bar_label(container)
         count   +=1
 
-    fig.savefig(f"figures/{operator}/3_users_{operator}_per_carier_tput_usage")
+    fig.savefig(f"figures/{operator}/3_users_{operator}_pcell_tput_usage")
 
 if __name__ == '__main__':
    
@@ -587,5 +587,5 @@ if __name__ == '__main__':
     #bar_plot_ca_tput_single_user(run_nums)
     #bar_plot_ca_tput_2_users(run_nums)
     #bar_plot_ca_tput_3_users(run_nums)
-    #plot_per_ca_tput_usage_2_users(run_nums)
-    plot_per_ca_tput_usage_3_users(run_nums)
+    #plot_pcell_tput_usage_2_users(run_nums)
+    plot_pcell_tput_usage_3_users(run_nums)
