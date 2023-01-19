@@ -20,15 +20,15 @@ carrier_tput_cols   =   \
 renamed_cols    =   ['PCell', 'SC1', 'SC2', 'SC3', 'SC4', 'SC5']
 renamed_dict    =   dict(zip(carrier_tput_cols, renamed_cols))
 
-data_dir    =  '/home/dinhp/data/wowmom_ext/ca/verizon/verizon_10_max/' 
+data_dir    =  '/home/dinhp/data/wowmom_ext/ca/verizon/verizon_200_300/' 
 
-##verizon single
-#operator    =   'verizon'
-#send_rates  =   ['10', '50', '100', 
-#                '250', '500', '1000', '1500', 'max']
-#run_nums = [1,2,3,4,5]
-#clients =   ['phone_1']
-#fig_size    =   (20,10)
+#verizon single
+operator    =   'verizon'
+send_rates  =   ['200', '225', '250', 
+                '275', '300']
+run_nums = [1,2,3,4,5]
+clients =   ['phone_1']
+fig_size    =   (20,10)
 
 ##verizon 2 users
 #operator    =   'verizon'
@@ -38,16 +38,16 @@ data_dir    =  '/home/dinhp/data/wowmom_ext/ca/verizon/verizon_10_max/'
 #clients =   ['phone_1', 'phone_2']
 #fig_size    =   (20,10)
 
-#verizon 3 users
-data_dir    =  '/home/dinhp/data/wowmom_ext/ca/verizon/' 
-operator    =   'verizon'
-send_rates = ['10', '50', '100',
-            '200', '225', '250', 
-            '275', '300', '500',
-             '1000','1500','max']
-run_nums = [1,2,3,4,5]
-clients =   ['phone_1', 'phone_2', 'phone_3']
-fig_size    =   (20,10)
+##verizon 3 users
+#data_dir    =  '/home/dinhp/data/wowmom_ext/ca/verizon/' 
+#operator    =   'verizon'
+#send_rates = ['10', '50', '100',
+#            '200', '225', '250', 
+#            '275', '300', '500',
+#             '1000','1500','max']
+#run_nums = [1,2,3,4,5]
+#clients =   ['phone_1', 'phone_2', 'phone_3']
+#fig_size    =   (20,10)
 
 def preprocess_df(csv_file):
     """
@@ -110,7 +110,7 @@ def bar_plot_average_tput_single_user(run_nums):
         container  =   axs[csv_file_list.index(csv_file)].bar(x=send_rates, 
                                                     height=avgs, yerr=stds)
         axs[csv_file_list.index(csv_file)].bar_label(container)
-    fig.savefig(f"figures/single_{operator}_average_tput")
+    fig.savefig(f"figures/{operator}_200_300/single_{operator}_average_tput")
 
 def bar_plot_average_tput_2_users(run_nums):
     """
@@ -160,7 +160,7 @@ def bar_plot_average_tput_2_users(run_nums):
                                                 yerr=stds)
         axs[csv_file_list_2.index(csv_file)][1].bar_label(container)
 
-    fig.savefig(f"figures/2_users_{operator}_average_tput")
+    fig.savefig(f"figures/{operator}_200_300/2_users_{operator}_average_tput")
 
 def bar_plot_average_tput_3_users(run_nums):
     """
@@ -227,7 +227,7 @@ def bar_plot_average_tput_3_users(run_nums):
                                                 height=avgs, 
                                                 yerr=stds)
         axs[csv_file_list_3.index(csv_file)][2].bar_label(container)
-    fig.savefig(f"figures/3_users_{operator}_average_tput")
+    fig.savefig(f"figures/{operator}_200_300/3_users_{operator}_average_tput")
 
 def bar_plot_ca_tput_single_user(run_nums):
     """
@@ -264,7 +264,7 @@ def bar_plot_ca_tput_single_user(run_nums):
             axs[csv_file_list.index(csv_file)].get_legend().remove()
 
 
-    fig.savefig(f"figures/single_{operator}_per_carier_average_tput")
+    fig.savefig(f"figures/{operator}_200_300/single_{operator}_per_carier_average_tput")
 
 def bar_plot_ca_tput_2_users(run_nums):
     """
@@ -328,7 +328,7 @@ def bar_plot_ca_tput_2_users(run_nums):
                     rot=0)
         axs[csv_file_list_2.index(csv_file)][1].get_legend().remove()
 
-    fig.savefig(f"figures/2_users_{operator}_per_carier_average_tput")
+    fig.savefig(f"figures/{operator}_200_300/2_users_{operator}_per_carier_average_tput")
 
 def bar_plot_ca_tput_3_users(run_nums):
 
@@ -417,7 +417,7 @@ def bar_plot_ca_tput_3_users(run_nums):
                     rot=0)
         axs[csv_file_list_3.index(csv_file)][2].get_legend().remove()
 
-    fig.savefig(f"figures/3_users_{operator}_per_carier_average_tput")
+    fig.savefig(f"figures/{operator}_200_300/3_users_{operator}_per_carier_average_tput")
 
 def plot_per_ca_tput_usage_2_users(rum_nums):
     """
@@ -483,7 +483,7 @@ def plot_per_ca_tput_usage_2_users(rum_nums):
         axs[count].bar_label(container)
         count   +=1
 
-    fig.savefig(f"figures/2_users_{operator}_per_carier_tput_usage")
+    fig.savefig(f"figures/{operator}_200_300/2_users_{operator}_per_carier_tput_usage")
 
 def plot_per_ca_tput_usage_3_users(rum_nums):
     """
@@ -568,16 +568,16 @@ def plot_per_ca_tput_usage_3_users(rum_nums):
         axs[count].bar_label(container)
         count   +=1
 
-    fig.savefig(f"figures/3_users_{operator}_per_carier_tput_usage")
+    fig.savefig(f"figures/{operator}_200_300/3_users_{operator}_per_carier_tput_usage")
 
 if __name__ == '__main__':
    
 
-    #bar_plot_average_tput_single_user(run_nums)
+    bar_plot_average_tput_single_user(run_nums)
     #bar_plot_average_tput_2_users(run_nums)
     #bar_plot_average_tput_3_users(run_nums)
     #bar_plot_ca_tput_single_user(run_nums)
     #bar_plot_ca_tput_2_users(run_nums)
     #bar_plot_ca_tput_3_users(run_nums)
     #plot_per_ca_tput_usage_2_users(run_nums)
-    plot_per_ca_tput_usage_3_users(run_nums)
+    #plot_per_ca_tput_usage_3_users(run_nums)
