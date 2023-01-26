@@ -17,8 +17,18 @@ carrier_tput_cols   =   \
                 '5G KPI SCell[3] Layer2 MAC DL Throughput [Mbps]',
                 '5G KPI SCell[4] Layer2 MAC DL Throughput [Mbps]',
                 '5G KPI SCell[5] Layer2 MAC DL Throughput [Mbps]']
+
+carrier_rsrp_cols   =   \
+        ['5G KPI PCell RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[1] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[2] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[3] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[4] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[5] RF Serving SS-RSRP [dBm]']
+
 renamed_cols    =   ['PCell', 'SC1', 'SC2', 'SC3', 'SC4', 'SC5']
-renamed_dict    =   dict(zip(carrier_tput_cols, renamed_cols))
+renamed_tput_dict    =   dict(zip(carrier_tput_cols, renamed_cols))
+renamed_rsrp_dict    =   dict(zip(carrier_rsrp_cols, renamed_cols))
 
 data_dir    =  '/home/dinhp/data/wowmom_ext/ca/verizon/verizon_10_max/' 
 
@@ -54,7 +64,8 @@ def preprocess_df(csv_file):
     Clean na and convert time stamp to index
     """
     df  =   pd.read_csv(csv_file, low_memory=False)
-    df  =   df[timestamp+mac_tput_col+ca_col+carrier_tput_cols]
+    df  =   df[timestamp+mac_tput_col+ca_col+
+                carrier_tput_cols+carrier_rsrp_cols]
     df.drop(df.tail(8).index,inplace=True)
 
     #convert 'TIME_STAMP' to datetime object 
@@ -65,7 +76,8 @@ def preprocess_df(csv_file):
     #help the seperation and also excluding very low value
     df  =   df[(df[mac_tput_col]>2).all(axis=1)]
     df  =   df.dropna(subset=mac_tput_col)
-    result  =   df.fillna(0)
+    df[carrier_tput_cols]  =   df[carrier_tput_cols].fillna(value=0)
+    result  =   df
     return result
 
 def get_per_rate_sub_df(df):
@@ -133,7 +145,7 @@ def bar_plot_average_tput_single_user(run_nums):
         for sub_df in sub_df_list:
             avgs += round(np.mean(sub_df[mac_tput_col])).tolist()
             stds += round(np.std(sub_df[mac_tput_col])).tolist()
-
+#
         container  =   axs[csv_file_list.index(csv_file)].bar(x=send_rates, 
                                                     height=avgs, yerr=stds)
         axs[csv_file_list.index(csv_file)].bar_label(container)
@@ -305,7 +317,7 @@ def bar_plot_ca_tput_single_user(run_nums):
         carrier_average_tputs['sending rates']   =   send_rates
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df.plot.bar(x   =   'sending rates',
                     y   =   renamed_cols, 
                     ax  =   axs[csv_file_list.index(csv_file)],
@@ -354,7 +366,7 @@ def bar_plot_ca_tput_2_users(run_nums):
         carrier_average_tputs['sending rates']   =   send_rates
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df.plot.bar(x   =   'sending rates',
                     y   =   renamed_cols, 
                     ax  =   axs[csv_file_list_1.index(csv_file)][0],
@@ -382,7 +394,7 @@ def bar_plot_ca_tput_2_users(run_nums):
         carrier_average_tputs['sending rates']   =   send_rates
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df.plot.bar(x   =   'sending rates',
                     y   =   renamed_cols, 
                     ax  =   axs[csv_file_list_2.index(csv_file)][1],
@@ -433,7 +445,7 @@ def bar_plot_ca_tput_3_users(run_nums):
         carrier_average_tputs['sending rates']   =   send_rates
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df.plot.bar(x   =   'sending rates',
                     y   =   renamed_cols, 
                     ax  =   axs[csv_file_list_1.index(csv_file)][0],
@@ -461,7 +473,7 @@ def bar_plot_ca_tput_3_users(run_nums):
         carrier_average_tputs['sending rates']   =   send_rates
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df.plot.bar(x   =   'sending rates',
                     y   =   renamed_cols, 
                     ax  =   axs[csv_file_list_2.index(csv_file)][1],
@@ -486,7 +498,7 @@ def bar_plot_ca_tput_3_users(run_nums):
         carrier_average_tputs['sending rates']   =   send_rates
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df.plot.bar(x   =   'sending rates',
                     y   =   renamed_cols, 
                     ax  =   axs[csv_file_list_3.index(csv_file)][2],
@@ -533,7 +545,7 @@ def plot_pcell_tput_usage_2_users(rum_nums):
                 carrier_average_tputs[col].append(np.mean(sub_df[col]))
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df_list_1.append(df)
 
     #phone_2
@@ -548,7 +560,7 @@ def plot_pcell_tput_usage_2_users(rum_nums):
                 carrier_average_tputs[col].append(np.mean(sub_df[col]))
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df_list_2.append(df)
    
     count   =   0
@@ -608,12 +620,13 @@ def plot_pcell_tput_usage_3_users(rum_nums):
                 carrier_average_tputs[col].append(np.mean(sub_df[col]))
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df_list_1.append(df)
 
     #phone_2
     df_list_2   =   []
     for csv_file in csv_file_list_2:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
         carrier_average_tputs    =   {}
         for col in carrier_tput_cols:
             carrier_average_tputs[col]  =   []
@@ -623,12 +636,13 @@ def plot_pcell_tput_usage_3_users(rum_nums):
                 carrier_average_tputs[col].append(np.mean(sub_df[col]))
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df_list_2.append(df)
 
     #phone_3
     df_list_3   =   []
     for csv_file in csv_file_list_3:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
         carrier_average_tputs    =   {}
         for col in carrier_tput_cols:
             carrier_average_tputs[col]  =   []
@@ -638,7 +652,7 @@ def plot_pcell_tput_usage_3_users(rum_nums):
                 carrier_average_tputs[col].append(np.mean(sub_df[col]))
         df  =   pd.DataFrame.from_dict(carrier_average_tputs)
         #rename columns
-        df  =   df.rename(columns    =   renamed_dict)
+        df  =   df.rename(columns    =   renamed_tput_dict)
         df_list_3.append(df)
    
     count   =   0
@@ -662,14 +676,243 @@ def plot_pcell_tput_usage_3_users(rum_nums):
 
     fig.savefig(f"figures/{operator}/3_users_{operator}_pcell_tput_usage")
 
+def bar_plot_ca_rsrp_single_user(run_nums):
+    """
+    Plot average rsrp per sending rate + per ca for all runs, 2 users
+    """
+    csv_file_list   =   []
+    for run_num in run_nums:
+        csv_file_list.append(data_dir+ 'single/'
+                                     + str(run_num)+'.csv')
+
+    fig, axs    =   plt.subplots(nrows  =   len(run_nums),
+                                ncols   =   len(clients),
+                                sharex=True,
+                                sharey=True)
+
+    fig.set_size_inches(fig_size)
+    #phone_1
+    for csv_file in csv_file_list:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
+        carrier_average_rsrp    =   {}
+        for col in carrier_rsrp_cols:
+            carrier_average_rsrp[col]  =   []
+        for sub_df  in sub_df_list:
+            #Get average rsrp per carrier
+            for col in carrier_rsrp_cols:
+                carrier_average_rsrp[col].append(np.mean(sub_df[col]))
+        carrier_average_rsrp['sending rates']   =   send_rates
+        df  =   pd.DataFrame.from_dict(carrier_average_rsrp)
+        #rename columns
+        df  =   df.rename(columns    =   renamed_rsrp_dict)
+        df.plot.bar(x   =   'sending rates',
+                    y   =   renamed_cols, 
+                    ax  =   axs[csv_file_list.index(csv_file)],
+                    stacked =   False,
+                    rot=0)
+        axs[csv_file_list.index(csv_file)].legend(loc   =   'upper left',
+                                                ncol    =   3)
+        axs[csv_file_list.index(csv_file)].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list.index(csv_file)].set_ylabel("RSRP (dBm)",
+                                                        fontsize=10)
+        if(csv_file_list.index(csv_file)!=0):
+            axs[csv_file_list.index(csv_file)].get_legend().remove()
+
+
+    fig.savefig(f"figures/{operator}/single_user_{operator}_per_carrier_average_rsrp")
+
+def bar_plot_ca_rsrp_2_users(run_nums):
+    """
+    Plot average rsrp per sending rate + per ca for all runs, 2 users
+    """
+    csv_file_list_1   =   []
+    csv_file_list_2   =   []
+    for run_num in run_nums:
+        csv_file_list_1.append(data_dir+ '2_phones/phone_1/'
+                                     + str(run_num)+'.csv')
+        csv_file_list_2.append(data_dir+ '2_phones/phone_2/' 
+                                    + str(run_num)+'.csv')
+
+    fig, axs    =   plt.subplots(nrows  =   len(run_nums),
+                                ncols   =   len(clients),
+                                sharex=True,
+                                sharey=True)
+
+    fig.set_size_inches(fig_size)
+    #phone_1
+    for csv_file in csv_file_list_1:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
+        carrier_average_rsrp    =   {}
+        for col in carrier_rsrp_cols:
+            carrier_average_rsrp[col]  =   []
+        for sub_df  in sub_df_list:
+            #Get average rsrp per carrier
+            for col in carrier_rsrp_cols:
+                carrier_average_rsrp[col].append(np.mean(sub_df[col]))
+        carrier_average_rsrp['sending rates']   =   send_rates
+        df  =   pd.DataFrame.from_dict(carrier_average_rsrp)
+        #rename columns
+        df  =   df.rename(columns    =   renamed_rsrp_dict)
+        df.plot.bar(x   =   'sending rates',
+                    y   =   renamed_cols, 
+                    ax  =   axs[csv_file_list_1.index(csv_file)][0],
+                    stacked =   False,
+                    rot=0)
+        axs[csv_file_list_1.index(csv_file)][0].legend(loc   =   'upper left',
+                                                ncol    =   3)
+        axs[csv_file_list_1.index(csv_file)][0].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_1.index(csv_file)][0].set_ylabel("RSRP (dBm)",
+                                                        fontsize=10)
+        if(csv_file_list_1.index(csv_file)!=0):
+            axs[csv_file_list_1.index(csv_file)][0].get_legend().remove()
+
+    #phone_2
+    for csv_file in csv_file_list_2:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
+        carrier_average_rsrp    =   {}
+        for col in carrier_rsrp_cols:
+            carrier_average_rsrp[col]  =   []
+        for sub_df  in sub_df_list:
+            #Get average throughput per carrier
+            for col in carrier_rsrp_cols:
+                carrier_average_rsrp[col].append(np.mean(sub_df[col]))
+        carrier_average_rsrp['sending rates']   =   send_rates
+        df  =   pd.DataFrame.from_dict(carrier_average_rsrp)
+        #rename columns
+        df  =   df.rename(columns    =   renamed_rsrp_dict)
+        df.plot.bar(x   =   'sending rates',
+                    y   =   renamed_cols, 
+                    ax  =   axs[csv_file_list_2.index(csv_file)][1],
+                    stacked =   False,
+                    rot=0)
+        axs[csv_file_list_2.index(csv_file)][1].legend(loc   =   'upper left',
+                                                ncol    =   3)
+        axs[csv_file_list_2.index(csv_file)][1].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].set_ylabel("RSRP (dBm)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].get_legend().remove()
+
+    fig.savefig(f"figures/{operator}/2_users_{operator}_per_carrier_average_rsrp")
+
+def bar_plot_ca_rsrp_3_users(run_nums):
+    """
+    Plot average rsrp per sending rate + per ca for all runs, 2 users
+    """
+    csv_file_list_1   =   []
+    csv_file_list_2   =   []
+    csv_file_list_3   =   []
+    for run_num in run_nums:
+        csv_file_list_1.append(data_dir+ '3_phones/phone_1/'
+                                     + str(run_num)+'.csv')
+        csv_file_list_2.append(data_dir+ '3_phones/phone_2/' 
+                                    + str(run_num)+'.csv')
+        csv_file_list_3.append(data_dir+ '3_phones/phone_3/' 
+                                    + str(run_num)+'.csv')
+
+    fig, axs    =   plt.subplots(nrows  =   len(run_nums),
+                                ncols   =   len(clients),
+                                sharex=True,
+                                sharey=True)
+
+    fig.set_size_inches(fig_size)
+    #phone_1
+    for csv_file in csv_file_list_1:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
+        carrier_average_rsrp    =   {}
+        for col in carrier_rsrp_cols:
+            carrier_average_rsrp[col]  =   []
+        for sub_df  in sub_df_list:
+            #Get average rsrp per carrier
+            for col in carrier_rsrp_cols:
+                carrier_average_rsrp[col].append(np.mean(sub_df[col]))
+        carrier_average_rsrp['sending rates']   =   send_rates
+        df  =   pd.DataFrame.from_dict(carrier_average_rsrp)
+        #rename columns
+        df  =   df.rename(columns    =   renamed_rsrp_dict)
+        df.plot.bar(x   =   'sending rates',
+                    y   =   renamed_cols, 
+                    ax  =   axs[csv_file_list_1.index(csv_file)][0],
+                    stacked =   False,
+                    rot=0)
+        axs[csv_file_list_1.index(csv_file)][0].legend(loc   =   'upper left',
+                                                ncol    =   3)
+        axs[csv_file_list_1.index(csv_file)][0].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_1.index(csv_file)][0].set_ylabel("RSRP (dBm)",
+                                                        fontsize=10)
+        if(csv_file_list_1.index(csv_file)!=0):
+            axs[csv_file_list_1.index(csv_file)][0].get_legend().remove()
+
+    #phone_2
+    for csv_file in csv_file_list_2:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
+        carrier_average_rsrp    =   {}
+        for col in carrier_rsrp_cols:
+            carrier_average_rsrp[col]  =   []
+        for sub_df  in sub_df_list:
+            #Get average throughput per carrier
+            for col in carrier_rsrp_cols:
+                carrier_average_rsrp[col].append(np.mean(sub_df[col]))
+        carrier_average_rsrp['sending rates']   =   send_rates
+        df  =   pd.DataFrame.from_dict(carrier_average_rsrp)
+        #rename columns
+        df  =   df.rename(columns    =   renamed_rsrp_dict)
+        df.plot.bar(x   =   'sending rates',
+                    y   =   renamed_cols, 
+                    ax  =   axs[csv_file_list_2.index(csv_file)][1],
+                    stacked =   False,
+                    rot=0)
+        axs[csv_file_list_2.index(csv_file)][1].legend(loc   =   'upper left',
+                                                ncol    =   3)
+        axs[csv_file_list_2.index(csv_file)][1].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].set_ylabel("RSRP (dBm)",
+                                                        fontsize=10)
+        axs[csv_file_list_2.index(csv_file)][1].get_legend().remove()
+
+    #phone_3
+    for csv_file in csv_file_list_3:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
+        carrier_average_rsrp    =   {}
+        for col in carrier_rsrp_cols:
+            carrier_average_rsrp[col]  =   []
+        for sub_df  in sub_df_list:
+            #Get average throughput per carrier
+            for col in carrier_rsrp_cols:
+                carrier_average_rsrp[col].append(np.mean(sub_df[col]))
+        carrier_average_rsrp['sending rates']   =   send_rates
+        df  =   pd.DataFrame.from_dict(carrier_average_rsrp)
+        #rename columns
+        df  =   df.rename(columns    =   renamed_rsrp_dict)
+        df.plot.bar(x   =   'sending rates',
+                    y   =   renamed_cols, 
+                    ax  =   axs[csv_file_list_3.index(csv_file)][2],
+                    stacked =   False,
+                    rot=0)
+        axs[csv_file_list_3.index(csv_file)][2].legend(loc   =   'upper left',
+                                                ncol    =   3)
+        axs[csv_file_list_3.index(csv_file)][2].set_xlabel("Send rates (Mbps)",
+                                                        fontsize=10)
+        axs[csv_file_list_3.index(csv_file)][2].set_ylabel("RSRP (dBm)",
+                                                        fontsize=10)
+        axs[csv_file_list_3.index(csv_file)][2].get_legend().remove()
+
+    fig.savefig(f"figures/{operator}/3_users_{operator}_per_carrier_average_rsrp")
+
 if __name__ == '__main__':
    
 
     #bar_plot_average_tput_single_user(run_nums)
     #bar_plot_ca_tput_single_user(run_nums)
+    #bar_plot_ca_rsrp_single_user(run_nums)
     #bar_plot_average_tput_2_users(run_nums)
     #bar_plot_ca_tput_2_users(run_nums)
     #plot_pcell_tput_usage_2_users(run_nums)
+    #bar_plot_ca_rsrp_2_users(run_nums)
     #bar_plot_average_tput_3_users(run_nums)
     #bar_plot_ca_tput_3_users(run_nums)
     #plot_pcell_tput_usage_3_users(run_nums)
+    #bar_plot_ca_rsrp_3_users(run_nums)

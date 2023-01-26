@@ -19,21 +19,30 @@ carrier_tput_cols   =   \
                 '5G KPI SCell[5] Layer2 MAC DL Throughput [Mbps]',
                 '5G KPI SCell[6] Layer2 MAC DL Throughput [Mbps]',
                 '5G KPI SCell[7] Layer2 MAC DL Throughput [Mbps]']
+carrier_rsrp_cols   =   \
+        ['5G KPI PCell RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[0] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[1] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[2] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[3] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[4] RF Serving SS-RSRP [dBm]',
+        '5G KPI SCell[5] RF Serving SS-RSRP [dBm]']
+
 renamed_cols    =   ['PCell', 'SC1', 'SC2', 'SC3',
                     'SC4', 'SC5', 'SC6', 'SC7']
 renamed_dict    =   dict(zip(carrier_tput_cols, renamed_cols))
 
 data_dir    =  '/home/dinhp/data/wowmom_ext/ca/atnt/' 
 
-##atnt single
-#operator    =   'atnt'
-#send_rates = ['10', '50', '100',
-#            '200', '225', '250', 
-#            '275', '300', '500',
-#             '1000','1500','max']
-#run_nums = [1,2,3,4,5]
-#clients =   ['phone_1']
-#fig_size    =   (20,10)
+#atnt single
+operator    =   'atnt'
+send_rates = ['10', '50', '100',
+            '200', '225', '250', 
+            '275', '300', '500',
+             '1000','1500','max']
+run_nums = [1,2,3,4,5]
+clients =   ['phone_1']
+fig_size    =   (20,10)
 
 ##atnt two phones
 #operator    =   'atnt'
@@ -46,15 +55,15 @@ data_dir    =  '/home/dinhp/data/wowmom_ext/ca/atnt/'
 #clients =   ['phone_1', 'phone_2']
 #fig_size    =   (20,10)
 
-#atnt three phones
-operator    =   'atnt'
-send_rates = ['10', '50', '100',
-            '200', '225', '250', 
-            '275', '300', '500',
-             '1000','1500','max']
-run_nums = [1,2,3,4]
-clients =   ['phone_1', 'phone_2', 'phone_3']
-fig_size    =   (20,10)
+##atnt three phones
+#operator    =   'atnt'
+#send_rates = ['10', '50', '100',
+#            '200', '225', '250', 
+#            '275', '300', '500',
+#             '1000','1500','max']
+#run_nums = [1,2,3,4]
+#clients =   ['phone_1', 'phone_2', 'phone_3']
+#fig_size    =   (20,10)
 
 def preprocess_df(csv_file):
     """
@@ -596,6 +605,7 @@ def plot_pcell_tput_usage_3_users(rum_nums):
     #phone_2
     df_list_2   =   []
     for csv_file in csv_file_list_2:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
         carrier_average_tputs    =   {}
         for col in carrier_tput_cols:
             carrier_average_tputs[col]  =   []
@@ -611,6 +621,7 @@ def plot_pcell_tput_usage_3_users(rum_nums):
     #phone_3
     df_list_3   =   []
     for csv_file in csv_file_list_3:
+        sub_df_list =   get_per_rate_sub_df(preprocess_df(csv_file))
         carrier_average_tputs    =   {}
         for col in carrier_tput_cols:
             carrier_average_tputs[col]  =   []
@@ -647,8 +658,8 @@ def plot_pcell_tput_usage_3_users(rum_nums):
 if __name__ == '__main__':
    
 
-    #bar_plot_average_tput_single_user(run_nums)
-    #bar_plot_ca_tput_single_user(run_nums)
+    bar_plot_average_tput_single_user(run_nums)
+    bar_plot_ca_tput_single_user(run_nums)
     #bar_plot_average_tput_2_users(run_nums)
     #bar_plot_ca_tput_2_users(run_nums)
     #plot_pcell_tput_usage_2_users(run_nums)
